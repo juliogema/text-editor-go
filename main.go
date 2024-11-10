@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"os/exec"
 )
@@ -16,6 +17,7 @@ func main() {
 		if err != nil || read == byte('q') {
 			return
 		}
+		fmt.Printf("%d\n", read)
 	}
 }
 
@@ -23,6 +25,10 @@ func enableRawMode() {
 	arguments := []string{
 		"-echo",
 		"-icanon",
+		"-isig",
+		"-ixon",
+		"-iexten",
+		"-icrnl",
 	}
 	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
@@ -36,6 +42,10 @@ func disableRawMode() {
 	arguments := []string{
 		"echo",
 		"icanon",
+		"isig",
+		"ixon",
+		"iexten",
+		"icrnl",
 	}
 	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
