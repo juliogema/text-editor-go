@@ -20,7 +20,11 @@ func main() {
 }
 
 func enableRawMode() {
-	command := exec.Command("stty", "raw")
+	arguments := []string{
+		"-echo",
+		"-icanon",
+	}
+	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
 	err := command.Run()
 	if err != nil {
@@ -29,7 +33,11 @@ func enableRawMode() {
 }
 
 func disableRawMode() {
-	command := exec.Command("stty", "-raw")
+	arguments := []string{
+		"echo",
+		"icanon",
+	}
+	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
 	err := command.Run()
 	if err != nil {
