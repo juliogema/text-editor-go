@@ -8,20 +8,30 @@ import (
 )
 
 func main() {
-	enableRawMode()
-	defer disableRawMode()
+	if err := enableRawMode(); err != nil {
+		panic(err)
+	}
+	defer func() {
+		err := disableRawMode()
+		if err != nil {
+			panic(err)
+		}
+	}()
 
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		read, err := reader.ReadByte()
-		if err != nil || read == byte('q') {
+		if err != nil {
+			panic(err)
+		}
+		if read == byte('q') {
 			return
 		}
 		fmt.Printf("%d\r\n", read)
 	}
 }
 
-func enableRawMode() {
+func enableRawMode() error {
 	arguments := []string{
 		"-echo",
 		"-icanon",
@@ -37,12 +47,11 @@ func enableRawMode() {
 	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
 	err := command.Run()
-	if err != nil {
-		panic(err)
-	}
+
+	return err
 }
 
-func disableRawMode() {
+func disableRawMode() error {
 	arguments := []string{
 		"echo",
 		"icanon",
@@ -58,7 +67,6 @@ func disableRawMode() {
 	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
 	err := command.Run()
-	if err != nil {
-		panic(err)
-	}
+
+	return err
 }
