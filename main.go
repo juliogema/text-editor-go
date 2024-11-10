@@ -17,7 +17,7 @@ func main() {
 		if err != nil || read == byte('q') {
 			return
 		}
-		fmt.Printf("%d\n", read)
+		fmt.Printf("%d\r\n", read)
 	}
 }
 
@@ -29,6 +29,7 @@ func enableRawMode() {
 		"-ixon",
 		"-iexten",
 		"-icrnl",
+		"-opost",
 	}
 	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
@@ -46,6 +47,7 @@ func disableRawMode() {
 		"ixon",
 		"iexten",
 		"icrnl",
+		"opost",
 	}
 	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
