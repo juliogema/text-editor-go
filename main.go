@@ -30,6 +30,9 @@ func enableRawMode() {
 		"-iexten",
 		"-icrnl",
 		"-opost",
+		"-brkint",
+		"-inpck",
+		"-istrip",
 	}
 	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
@@ -48,6 +51,9 @@ func disableRawMode() {
 		"iexten",
 		"icrnl",
 		"opost",
+		"brkint",
+		"inpck",
+		"istrip",
 	}
 	command := exec.Command("stty", arguments...)
 	command.Stdin = os.Stdin
